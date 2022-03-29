@@ -6,14 +6,16 @@
 <%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql"%>
 <%@ taglib prefix="x" uri="http://java.sun.com/jsp/jstl/xml"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %> <!-- 추가 --> 
+<%@ taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
+<!-- 추가 -->
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
+<meta id="_csrf" name="_csrf" content="${_csrf.token}" />
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 
@@ -33,14 +35,13 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
-	.nav-link{
+.nav-link {
 	font-size: 14px;
-	}
-	
-	.nav-login{
+}
+
+.nav-login {
 	margin-left: auto;
-	}
-	
+}
 </style>
 </head>
 <body>
@@ -68,30 +69,43 @@
 					<li class="nav-item"><a class="nav-link" href="spj_boardList">
 							게시판 </a></li> &nbsp;&nbsp;&nbsp;
 
-					<li class="nav-item"><a class="nav-link" href="spj_about"> About
-							SPJ Project </a></li> &nbsp;&nbsp;&nbsp;
+					<li class="nav-item"><a class="nav-link" href="spj_about">
+							About SPJ Project </a></li> &nbsp;&nbsp;&nbsp;
 				</ul>
-			 	<ul class="navbar-nav nav-login ms-auto mb-2 mb-lg-0" >
-<!-- 			 		로그인하고나면 로그인 버튼이, 로그아웃으로 바뀌게 구현해야 함.
+				<ul class="navbar-nav nav-login ms-auto mb-2 mb-lg-0">
+					<!-- 			 		로그인하고나면 로그인 버튼이, 로그아웃으로 바뀌게 구현해야 함.
                		<li class="nav-item"><a class="nav-link" href="spj_login" id="log"> 로그인 </a></li>
                		<li class="nav-item"><a class="nav-link" href="spj_join" id="log2"> 회원가입 </a></li>
              		<li class="nav-item"><a class="nav-link" href="spj_logout" > 로그아웃 </a></li>
                   	<li class="nav-item"><a class="nav-link" href="#">마이페이지</a></li>
 					<li class="nav-item"><a class="nav-link" href="#"> 개인정보수정 </a></li> -->
-					
-					<sec:authorize access="isAnonymous()">
-               		<li class="nav-item"><a class="nav-link" href="spj_login"> 로그인 </a></li>
-               		<li class="nav-item"><a class="nav-link" href="spj_join"> 회원가입 </a></li>
-               		</sec:authorize>
-               		<sec:authorize access="isAuthenticated()">
-             		<li class="nav-item"><a class="nav-link" href="spj_logout" > 로그아웃 </a></li>
-                  	<li class="nav-item"><a class="nav-link" href="#">마이페이지</a></li>
-               		</sec:authorize>
-				</ul>
-				
-				
-		</div>
 
-	</nav> 
+					<sec:authorize access="isAnonymous()">
+						<li class="nav-item"><a class="nav-link" href="spj_login">
+								로그인 </a></li>
+						<li class="nav-item"><a class="nav-link" href="spj_join">
+								회원가입 </a></li>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<li class="nav-item"><a class="nav-link" href="#">마이페이지</a></li>
+						<!-- nav에 있는 '로그아웃'을 누르면 바로 로그아웃처리되게 함. -->
+						<!-- '로그아웃'을 누르면 id가 logout-form인 form을 submit처리하게 하여 로그아웃 처리 (action="logout") -->
+						<!-- form태그는 숨김처리해서 화면에는 나오지 않고, '로그아웃'을 누르면 form이 실행되게끔만 처리함. -->
+
+						<li class="nav-item"><a class="nav-link" href="#"
+							onclick="document.getElementById('logout-form').submit();">
+								로그아웃 </a></li>
+						<form id="logout-form" style="display: none" action="logout"
+							method="POST">
+
+							<input type="hidden" name="${_csrf.parameterName}"
+								value="${_csrf.token}" />
+						</form>
+					</sec:authorize>
+				</ul>
+
+
+			</div>
+	</nav>
 </body>
 </html>
